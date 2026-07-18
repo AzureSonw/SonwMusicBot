@@ -1,0 +1,12 @@
+/nbproject/
+/target/
+/Playlists/
+/test/
+*.json
+*.txt
+nb*.xml
+/.idea/
+/.vscode/
+/.cursor/
+dependency-reduced-pom.xml
+*.lock

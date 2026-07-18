@@ -1,0 +1,22 @@
+SonwMusicBot
+Copyright 2026 AzureSonw
+
+This product includes software developed by John Grosh (jagrosh) as part of
+MusicBot / JMusicBot, originally distributed under the Apache License 2.0.
+Original project: https://github.com/jagrosh/MusicBot
+
+This repository is a modified derivative. Modifications by AzureSonw include,
+among other changes:
+
+- restored and updated music playback functionality;
+- Apple Music support through LavaSrc mirror resolution;
+- Bilibili support through lavabili-plugin, including list-related content;
+- fixes related to YouTube OAuth playback clients;
+- Simplified Chinese localization for important user-facing messages;
+- project branding and distribution changes under the SonwMusicBot name.
+
+Third-party libraries and plugins included in or used by this project remain
+subject to their own copyright notices and license terms.
+
+This NOTICE file is provided for attribution and informational purposes and
+does not modify the terms of the Apache License 2.0 contained in LICENSE.
