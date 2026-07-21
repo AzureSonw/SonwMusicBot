@@ -22,12 +22,12 @@ This version restores music playback functionality, adds Apple Music and Bilibil
 ## 📦 Project Information
 
 - **Original project:** [jagrosh/MusicBot](https://github.com/jagrosh/MusicBot)
-- **Base version:** JMusicBot `0.6.2`
+- **Base version:** JMusicBot `0.4.3`
 - **Project name:** SonwMusicBot
 - **Maintainer:** AzureSonw
 - **Primary language:** Java
 - **Supported operating system:** Windows
-- **Current release:** N/A
+- **Current release:** `0.6.2`
 
 ---
 
