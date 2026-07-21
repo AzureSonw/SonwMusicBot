@@ -22,12 +22,12 @@
 ## 📦 项目信息
 
 - **原始项目：** [jagrosh/MusicBot](https://github.com/jagrosh/MusicBot)
-- **基础版本：** JMusicBot `0.6.2`
+- **基础版本：** JMusicBot `0.4.3`
 - **项目名称：** SonwMusicBot
 - **维护者：** AzureSonw
 - **主要语言：** Java
 - **支持的操作系统：** Windows
-- **当前版本：** N/A
+- **当前版本：** `0.6.2`
 
 ---
 
