@@ -44,8 +44,8 @@ import java.nio.file.Paths;
  */
 public class OtherUtil
 {
-    public final static String PROJECT_PAGE_URL = "https://github.com/AzureSonw/SeVileMusicBot";
-    private final static String RELEASE_API_BASE_URL = "https://api.github.com/repos/AzureSonw/SeVileMusicBot";
+    public final static String PROJECT_PAGE_URL = "https://github.com/AzureSonw/SonwMusicBot";
+    private final static String RELEASE_API_BASE_URL = "https://api.github.com/repos/AzureSonw/SonwMusicBot";
     public final static String NEW_VERSION_AVAILABLE = "There is a new version of JMusicBot available!\n"
                     + "Current version: %s\n"
                     + "New Version: %s\n\n"
