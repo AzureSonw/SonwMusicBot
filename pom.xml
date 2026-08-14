@@ -52,20 +52,20 @@
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/AzureSonw/SeVileMusicBot.git</connection>
-        <developerConnection>scm:git:git@github.com:AzureSonw/SeVileMusicBot.git</developerConnection>
-        <url>https://github.com/AzureSonw/SeVileMusicBot</url>
+        <connection>scm:git:https://github.com/AzureSonw/SonwMusicBot.git</connection>
+        <developerConnection>scm:git:git@github.com:AzureSonw/SonwMusicBot.git</developerConnection>
+        <url>https://github.com/AzureSonw/SonwMusicBot</url>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/AzureSonw/SeVileMusicBot/issues</url>
+        <url>https://github.com/AzureSonw/SonwMusicBot/issues</url>
     </issueManagement>
 
     <ciManagement>
         <system>GitHub Actions</system>
-        <url>https://github.com/AzureSonw/SeVileMusicBot/actions</url>
+        <url>https://github.com/AzureSonw/SonwMusicBot/actions</url>
     </ciManagement>
 
     <repositories>
