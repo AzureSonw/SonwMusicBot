@@ -21,11 +21,11 @@ echo Building SonwMusicBot...
 mvn -DskipTests package
 if errorlevel 1 exit /b 1
 
-if exist target\JMusicBot-0.6.2-All.jar (
-  move /Y target\JMusicBot-0.6.2-All.jar target\SonwMusicBot-0.6.2-All.jar >nul
+if exist target\JMusicBot-0.6.3-All.jar (
+  move /Y target\JMusicBot-0.6.3-All.jar target\SonwMusicBot-0.6.3.jar >nul
 )
 
 echo.
 echo Done.
 echo Fat jar:
-echo target\SonwMusicBot-0.6.2-All.jar
+echo target\SonwMusicBot-0.6.3.jar

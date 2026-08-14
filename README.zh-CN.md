@@ -27,7 +27,7 @@
 - **维护者：** AzureSonw
 - **主要语言：** Java
 - **支持的操作系统：** Windows
-- **当前版本：** `0.6.2`
+- **当前版本：** `0.6.3`
 
 ---
 
@@ -58,7 +58,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 
 ## 🚀 运行机器人
 
-1. 从 Releases 下载 `SonwMusicBot-0.6.2-AppleMusic-Bilibili-Chinese-All.jar`。
+1. 从 Releases 下载 `SonwMusicBot-0.6.3.jar`。
 2. 将 JAR 单独放进一个文件夹。
 3. 直接双击 JAR 启动 SonwMusicBot。
 4. 第一次启动时，机器人会自动生成配置文件。
@@ -68,7 +68,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 也可以通过命令行启动：
 
 ```bat
-java -jar SonwMusicBot-0.6.2-AppleMusic-Bilibili-Chinese-All.jar
+java -jar SonwMusicBot-0.6.3.jar
 ```
 
 如果双击没有反应，请确认 Java 已安装，并确认 Windows 已将 `.jar` 文件关联到 Java。
@@ -111,7 +111,7 @@ BUILD.bat
 构建输出：
 
 ```text
-target\SonwMusicBot-0.6.2-All.jar
+target\SonwMusicBot-0.6.3.jar
 ```
 
 ---
