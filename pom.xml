@@ -583,7 +583,7 @@
         <lavaplayer.version>2.2.7</lavaplayer.version>
         <lavasrc.version>4.8.2</lavasrc.version>
         <lavabili-plugin.version>1.3.1-lists</lavabili-plugin.version>
-        <youtube-source.version>1.18.1</youtube-source.version>
+        <youtube-source.version>1.18.2</youtube-source.version>
         <logback.version>1.5.25</logback.version>
         <typesafe-config.version>1.4.3</typesafe-config.version>
         <jsoup.version>1.22.1</jsoup.version>
