@@ -305,10 +305,11 @@ public enum AudioSource
         if (useOauth)
         {
             return new Client[] {
+                // Prefer authenticated playback; TV does not claim metadata/search requests.
+                new Tv(),
                 new AndroidVrWithThumbnail(),
                 new MWebWithThumbnail(),
                 new WebWithThumbnail(),
-                new Tv(),
                 new TvHtml5SimplyWithThumbnail()
             };
         }
