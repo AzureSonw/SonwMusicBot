@@ -12,7 +12,7 @@
 
 - 修复音乐无法正常播放的问题
 - 通过 LavaSrc 镜像搜索支持 Apple Music
-- 通过 `lavabili-plugin` 支持 Bilibili
+- 通过 `lavabili-plugin 1.4.1` 支持 Bilibili
 - 支持 Bilibili BV 链接、分 P 视频、收藏夹、番剧、列表和合集
 - 为 Apple Music 镜像曲目加入 YouTube OAuth 播放客户端修复
 - 汉化大多数重要的音乐播放、队列和 DJ 指令消息
@@ -27,7 +27,7 @@
 - **维护者：** AzureSonw
 - **主要语言：** Java
 - **支持的操作系统：** Windows
-- **当前版本：** `0.6.4`
+- **当前版本：** `0.6.5`
 
 ---
 
@@ -58,7 +58,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 
 ## 🚀 运行机器人
 
-1. 从 Releases 下载 `SonwMusicBot-0.6.4.jar`。
+1. 从 Releases 下载 `SonwMusicBot-0.6.5.jar`。
 2. 将 JAR 单独放进一个文件夹。
 3. 直接双击 JAR 启动 SonwMusicBot。
 4. 第一次启动时，机器人会自动生成配置文件。
@@ -68,7 +68,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 也可以通过命令行启动：
 
 ```bat
-java -jar SonwMusicBot-0.6.4.jar
+java -jar SonwMusicBot-0.6.5.jar
 ```
 
 如果双击没有反应，请确认 Java 已安装，并确认 Windows 已将 `.jar` 文件关联到 Java。
@@ -108,10 +108,12 @@ BUILD.bat
 
 构建脚本会先安装项目附带的本地 `lavabili-plugin` JAR，然后构建机器人。
 
+Bilibili 升级验证：[独立检查说明](scripts/BILIBILI_TESTS.md)。
+
 构建输出：
 
 ```text
-target\SonwMusicBot-0.6.4.jar
+target\SonwMusicBot-0.6.5.jar
 ```
 
 ---

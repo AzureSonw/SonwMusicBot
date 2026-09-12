@@ -12,7 +12,7 @@ This version restores music playback functionality, adds Apple Music and Bilibil
 
 - Restores music playback functionality
 - Supports Apple Music through LavaSrc mirror search
-- Supports Bilibili through `lavabili-plugin`
+- Supports Bilibili through `lavabili-plugin 1.4.1`
 - Supports Bilibili BV links, multi-part videos, favorites, seasons, lists, and collections
 - Includes a YouTube OAuth playback-client fix for Apple Music mirror tracks
 - Translates most important music, playback, queue, and DJ command messages into Simplified Chinese
@@ -27,7 +27,7 @@ This version restores music playback functionality, adds Apple Music and Bilibil
 - **Maintainer:** AzureSonw
 - **Primary language:** Java
 - **Supported operating system:** Windows
-- **Current release:** `0.6.4`
+- **Current release:** `0.6.5`
 
 ---
 
@@ -58,7 +58,7 @@ Other sources inherited from the original bot may remain available depending on 
 
 ## 🚀 Running the Bot
 
-1. Download `SonwMusicBot-0.6.4.jar` from Releases.
+1. Download `SonwMusicBot-0.6.5.jar` from Releases.
 2. Put the JAR in its own folder.
 3. Double-click the JAR to start SonwMusicBot.
 4. On first launch, the bot creates its configuration file automatically.
@@ -68,7 +68,7 @@ Other sources inherited from the original bot may remain available depending on 
 Command-line startup remains available:
 
 ```bat
-java -jar SonwMusicBot-0.6.4.jar
+java -jar SonwMusicBot-0.6.5.jar
 ```
 
 If double-clicking does nothing, verify that Java is installed and that `.jar` files are associated with Java.
@@ -108,10 +108,12 @@ BUILD.bat
 
 The script installs the bundled local `lavabili-plugin` JAR before building the bot.
 
+Bilibili upgrade verification: [standalone checks](scripts/BILIBILI_TESTS.md).
+
 Build output:
 
 ```text
-target\SonwMusicBot-0.6.4.jar
+target\SonwMusicBot-0.6.5.jar
 ```
 
 ---
