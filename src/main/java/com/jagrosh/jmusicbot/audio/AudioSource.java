@@ -147,7 +147,8 @@ public enum AudioSource
             bilibiliConfig.setEnabled(true);
             bilibiliConfig.setAllowSearch(true);
             bilibiliConfig.setPlaylistPageCount(config.getMaxBilibiliPlaylistPages());
-            manager.registerSourceManager(new BilibiliAudioSourceManager(bilibiliConfig));
+            manager.registerSourceManager(new BilibiliSourceWithLists(
+                new BilibiliAudioSourceManager(bilibiliConfig), config.getMaxBilibiliPlaylistPages()));
         }
     ),
     

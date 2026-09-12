@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.arifbanai</groupId>
     <artifactId>JMusicBot</artifactId>
-    <version>0.6.4</version>
+    <version>0.6.5</version>
     <packaging>jar</packaging>
 
     <name>JMusicBot</name>
@@ -592,7 +592,7 @@
         <udpqueue.version>0.2.12</udpqueue.version>
         <lavaplayer.version>2.2.7</lavaplayer.version>
         <lavasrc.version>4.8.2</lavasrc.version>
-        <lavabili-plugin.version>1.3.1-lists</lavabili-plugin.version>
+        <lavabili-plugin.version>1.4.1</lavabili-plugin.version>
         <!-- Pinned upstream TV identity and complete itag 18 playback fixes (#233, #235). -->
         <youtube-source.version>f45bbb7aebfcbc1c553769e04af6cd43afa8b7c3-SNAPSHOT</youtube-source.version>
         <logback.version>1.5.25</logback.version>

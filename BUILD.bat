@@ -8,24 +8,24 @@ if errorlevel 1 (
 )
 
 echo Installing local lavabili plugin...
-mvn install:install-file ^
-  -Dfile=libs\lavabili-plugin-1.3.1-lists.jar ^
+call mvn install:install-file ^
+  -Dfile=libs\lavabili-plugin-1.4.1.jar ^
   -DgroupId=com.github.ParrotXray ^
   -DartifactId=lavabili-plugin ^
-  -Dversion=1.3.1-lists ^
+  -Dversion=1.4.1 ^
   -Dpackaging=jar ^
   -DgeneratePom=true
 if errorlevel 1 exit /b 1
 
 echo Building SonwMusicBot...
-mvn -DskipTests package
+call mvn -Dmaven.test.skip=true package
 if errorlevel 1 exit /b 1
 
-if exist target\JMusicBot-0.6.4-All.jar (
-  move /Y target\JMusicBot-0.6.4-All.jar target\SonwMusicBot-0.6.4.jar >nul
+if exist target\JMusicBot-0.6.5-All.jar (
+  move /Y target\JMusicBot-0.6.5-All.jar target\SonwMusicBot-0.6.5.jar >nul
 )
 
 echo.
 echo Done.
 echo Fat jar:
-echo target\SonwMusicBot-0.6.4.jar
+echo target\SonwMusicBot-0.6.5.jar
