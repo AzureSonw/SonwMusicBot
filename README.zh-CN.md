@@ -12,7 +12,7 @@
 
 - 修复音乐无法正常播放的问题
 - 通过 LavaSrc 镜像搜索支持 Apple Music
-- 通过 `lavabili-plugin 1.4.1` 支持 Bilibili
+- 通过 `lavabili-plugin 1.4.2` 支持 Bilibili
 - 支持 Bilibili BV 链接、分 P 视频、收藏夹、番剧、列表和合集
 - 为 Apple Music 镜像曲目加入 YouTube OAuth 播放客户端修复
 - 汉化大多数重要的音乐播放、队列和 DJ 指令消息

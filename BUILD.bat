@@ -9,10 +9,10 @@ if errorlevel 1 (
 
 echo Installing local lavabili plugin...
 call mvn install:install-file ^
-  -Dfile=libs\lavabili-plugin-1.4.1.jar ^
+  -Dfile=libs\lavabili-plugin-1.4.2.jar ^
   -DgroupId=com.github.ParrotXray ^
   -DartifactId=lavabili-plugin ^
-  -Dversion=1.4.1 ^
+  -Dversion=1.4.2 ^
   -Dpackaging=jar ^
   -DgeneratePom=true
 if errorlevel 1 exit /b 1

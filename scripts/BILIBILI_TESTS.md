@@ -1,9 +1,13 @@
 # Bilibili upgrade checks
 
-The bundled `libs/lavabili-plugin-1.4.1.jar` is the unmodified official release:
+The bundled `libs/lavabili-plugin-1.4.2.jar` is the unmodified official release:
 
-- Upstream: https://github.com/ParrotXray/lavabili-plugin/releases/tag/1.4.1
-- SHA-256: `c2ea7ce41ef84c6133c98a49ca4c801e3fa29abd706a899c8283a832ae2647a8`
+- Upstream: https://github.com/ParrotXray/lavabili-plugin/releases/tag/1.4.2
+- SHA-256: `aa8258dac43abd4e722016555005d52382181be2b8bf25dbd7817e5d11fdc7eb`
+
+Version 1.4.2 fixes the upstream Cookie auto-refresh CorrespondPath generation.
+The bot continues to use anonymous playback; this update does not configure
+Bilibili login credentials or change the playlist wrappers.
 
 Favorites, seasons and series from the previous custom binary are now handled by
 `BilibiliPlaylistLoader` and `BilibiliSourceWithLists`. Video loading and playback
@@ -34,4 +38,7 @@ rate restrictions can affect this optional test. It does not exercise Discord
 voice delivery or fetch real favorite/collection pages.
 
 These checks intentionally run against the release JAR independently of the
-repository's legacy test suite, which still has unrelated API compilation errors.
+repository's legacy test suite. On JDK 25, `mvn verify` runs 232 unit tests but
+reports five failures and three errors in the existing YouTube OAuth/client and
+audio-source configuration tests. The same eight failures were reproduced on
+the unmodified 1.4.1 baseline; integration tests are not reached.

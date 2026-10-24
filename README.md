@@ -12,7 +12,7 @@ This version restores music playback functionality, adds Apple Music and Bilibil
 
 - Restores music playback functionality
 - Supports Apple Music through LavaSrc mirror search
-- Supports Bilibili through `lavabili-plugin 1.4.1`
+- Supports Bilibili through `lavabili-plugin 1.4.2`
 - Supports Bilibili BV links, multi-part videos, favorites, seasons, lists, and collections
 - Includes a YouTube OAuth playback-client fix for Apple Music mirror tracks
 - Translates most important music, playback, queue, and DJ command messages into Simplified Chinese
