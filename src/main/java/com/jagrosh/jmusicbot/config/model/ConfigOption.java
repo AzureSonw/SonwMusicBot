@@ -69,6 +69,7 @@ public enum ConfigOption {
     // Complex options - Nested configurations
     ALIASES("commands.aliases", ConfigType.CONFIG, false, "Command aliases configuration"),
     TRANSFORMS("playback.transforms", ConfigType.CONFIG, false, "Audio source transforms configuration"),
+    BILIBILI_AUTH("playback.bilibili.auth", ConfigType.CONFIG, false, "Optional local Bilibili authentication; never share these values"),
     AUDIO_SOURCES("playback.audioSources", ConfigType.CONFIG, false, "Audio sources configuration (nested booleans)");
     
     private final String key;
