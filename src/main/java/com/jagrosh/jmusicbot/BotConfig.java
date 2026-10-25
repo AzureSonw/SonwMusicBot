@@ -65,7 +65,7 @@ public class BotConfig {
     private double skipratio;
     private OnlineStatus status;
     private Activity game;
-    private Config aliases, transforms;
+    private Config aliases, transforms, bilibiliAuth;
     private Set<AudioSource> enabledAudioSources;
 
     private boolean valid = false;
@@ -264,6 +264,9 @@ public class BotConfig {
         maxAppleMusicPlaylistPages = MAX_APPLE_MUSIC_PLAYLIST_PAGES.getInt(config);
         maxAppleMusicAlbumPages = MAX_APPLE_MUSIC_ALBUM_PAGES.getInt(config);
         maxBilibiliPlaylistPages = MAX_BILIBILI_PLAYLIST_PAGES.getInt(config);
+        bilibiliAuth = BILIBILI_AUTH.getConfig(config);
+        // Validate optional authentication while configuration errors can still be shown safely.
+        com.jagrosh.jmusicbot.audio.BilibiliSettings.create(bilibiliAuth, maxBilibiliPlaylistPages);
         useYouTubeOauth = USE_YOUTUBE_OAUTH.getBoolean(config);
         aloneTimeUntilStop = ALONE_TIME_UNTIL_STOP.getLong(config);
         playlistsFolder = PLAYLISTS_FOLDER.getString(config);
@@ -480,6 +483,10 @@ public class BotConfig {
 
     public int getMaxBilibiliPlaylistPages() {
         return maxBilibiliPlaylistPages;
+    }
+
+    public Config getBilibiliAuth() {
+        return bilibiliAuth;
     }
 
     public String getMaxTime() {

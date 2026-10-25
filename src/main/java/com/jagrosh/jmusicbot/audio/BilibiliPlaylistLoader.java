@@ -156,9 +156,7 @@ final class BilibiliPlaylistLoader
     private static String textOr(JsonBrowser value, String fallback) { return value.isNull() ? fallback : value.text(); }
     private static JsonBrowser data(JsonBrowser response)
     {
-        if (response == null || response.get("code").asLong(-1) != 0 || response.get("data").isNull())
-            throw invalid("Bilibili 列表无法访问（可能已删除、设为私密或请求受限）");
-        return response.get("data");
+        return BilibiliErrors.data(response);
     }
     private static FriendlyException invalid(String message)
     {

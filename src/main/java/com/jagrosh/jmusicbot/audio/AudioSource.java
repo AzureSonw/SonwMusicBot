@@ -143,10 +143,7 @@ public enum AudioSource
         "Bilibili videos, multi-part videos, audio playlists, favorites, seasons, and series",
         90,
         (manager, config) -> {
-            BilibiliConfig bilibiliConfig = new BilibiliConfig();
-            bilibiliConfig.setEnabled(true);
-            bilibiliConfig.setAllowSearch(true);
-            bilibiliConfig.setPlaylistPageCount(config.getMaxBilibiliPlaylistPages());
+            BilibiliConfig bilibiliConfig = BilibiliSettings.create(config.getBilibiliAuth(), config.getMaxBilibiliPlaylistPages());
             manager.registerSourceManager(new BilibiliSourceWithLists(
                 new BilibiliAudioSourceManager(bilibiliConfig), config.getMaxBilibiliPlaylistPages()));
         }

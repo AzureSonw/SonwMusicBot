@@ -35,7 +35,8 @@ public final class BilibiliUpgradeCheck
         offline();
         System.out.println("OFFLINE PASS: " + checks + " assertions");
         if (args.length > 0 && args[0].equals("--online"))
-            online();
+            online(args.length > 1 ? args[1] : "https://www.bilibili.com/video/BV1ZrJi6UEwN?p=1",
+                args.length > 2 ? args[2] : "BV1ZrJi6UEwN");
     }
 
     private static void offline()
@@ -115,7 +116,7 @@ public final class BilibiliUpgradeCheck
             u -> { throw new AssertionError("invalid ID must not make a request"); }, VIDEO));
     }
 
-    private static void online() throws Exception
+    private static void online(String videoUrl, String expectedBvid) throws Exception
     {
         DefaultAudioPlayerManager manager = new DefaultAudioPlayerManager();
         AudioPlayer player = manager.createPlayer();
@@ -125,8 +126,8 @@ public final class BilibiliUpgradeCheck
             config.setEnabled(true);
             config.setAllowSearch(true);
             manager.registerSourceManager(new BilibiliSourceWithLists(new BilibiliAudioSourceManager(config), 6));
-            AudioTrack track = firstTrack(manager.loadItemSync(new AudioReference("https://www.bilibili.com/video/" + BV + "?p=1", null)));
-            require(track.getInfo().uri.contains(BV), "direct link resolves requested BV");
+            AudioTrack track = firstTrack(manager.loadItemSync(new AudioReference(videoUrl, null)));
+            require(track.getInfo().identifier.equals(expectedBvid), "direct link resolves requested BV");
             System.out.println("ONLINE metadata PASS: " + track.getInfo().title);
             AudioTrack decoded = manager.decodeTrackDetails(track.getInfo(), manager.encodeTrackDetails(track));
             require(decoded != null && decoded.getIdentifier().equals(track.getIdentifier()), "source registration/serialization");
