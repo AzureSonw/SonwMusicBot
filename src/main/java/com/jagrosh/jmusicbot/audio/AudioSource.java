@@ -143,12 +143,19 @@ public enum AudioSource
         "Bilibili videos, multi-part videos, audio playlists, favorites, seasons, and series",
         90,
         (manager, config) -> {
+            BilibiliSession session = new BilibiliSession(System.getenv());
             BilibiliConfig bilibiliConfig = new BilibiliConfig();
             bilibiliConfig.setEnabled(true);
             bilibiliConfig.setAllowSearch(true);
             bilibiliConfig.setPlaylistPageCount(config.getMaxBilibiliPlaylistPages());
+            session.configureDevice(bilibiliConfig);
+            BilibiliAudioSourceManager source = new BilibiliAudioSourceManager(bilibiliConfig);
+            session.applyTo(source.getHttpInterface().getContext());
+            LoggerFactory.getLogger(BilibiliSession.class).info(session.hasSession()
+                ? "Bilibili session cookies configured from environment (login validity is not yet verified)"
+                : "Bilibili anonymous mode; set BILIBILI_SESSDATA to use a login session if requests are restricted");
             manager.registerSourceManager(new BilibiliSourceWithLists(
-                new BilibiliAudioSourceManager(bilibiliConfig), config.getMaxBilibiliPlaylistPages()));
+                source, config.getMaxBilibiliPlaylistPages()));
         }
     ),
     

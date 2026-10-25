@@ -41,6 +41,13 @@ Apple Music links are resolved through LavaSrc mirror search.
 
 Supported Bilibili content includes BV links, multi-part videos, favorite lists, seasons, lists, and collections.
 
+For HTTP 412 errors, optional login sessions can be configured through `BILIBILI_SESSDATA`,
+`BILIBILI_BILI_JCT`, `BILIBILI_DEDE_USER_ID`, `BILIBILI_BUVID3` and `BILIBILI_BUVID4` in the
+Java process environment. Only `BILIBILI_SESSDATA` is required; take all values from your own
+browser session. Login cookies are scoped to HTTPS Bilibili domains and are not written to
+the bot config or logs. Cookie refresh is manual. See the [setup guide (Chinese)](docs/BILIBILI_LOGIN.md).
+Authentication does not guarantee that Bilibili will remove an IP/risk-control restriction.
+
 ### Other Sources
 
 Other sources inherited from the original bot may remain available depending on the configured playback clients and plugins.
