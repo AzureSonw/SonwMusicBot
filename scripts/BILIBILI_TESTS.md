@@ -14,13 +14,19 @@ but uses a cookieless media client, correct range requests and bounded startup
 failover to signed URLs returned for the same AAC representation. Playlist page
 limits are preserved. No Discord lyrics commands were added.
 
+In 0.6.8, only a typed missing-resource error from an individual entry is skipped.
+The same error from the list endpoint still fails, as do authentication, rate-limit,
+network and unexpected failures. Canonical skipped links and totals are logged.
+
 After running `BUILD.bat`, run these commands from the repository root with JDK 25+:
 
 ```powershell
-javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.7.jar -d target/upgrade-check scripts/BilibiliUpgradeCheck.java scripts/Bilibili412Check.java scripts/Bilibili567Check.java
-java -cp "target/upgrade-check;target/SonwMusicBot-0.6.7.jar" com.jagrosh.jmusicbot.audio.BilibiliUpgradeCheck
-java -cp "target/upgrade-check;target/SonwMusicBot-0.6.7.jar" com.jagrosh.jmusicbot.audio.Bilibili412Check
-java -cp "target/upgrade-check;target/SonwMusicBot-0.6.7.jar" com.jagrosh.jmusicbot.audio.Bilibili567Check
+javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.8.jar -d target/upgrade-check scripts/BilibiliUpgradeCheck.java scripts/Bilibili412Check.java scripts/Bilibili567Check.java scripts/BilibiliPlaylistCheck.java scripts/BilibiliDiagnosticCheck.java
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliUpgradeCheck
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.Bilibili412Check
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.Bilibili567Check
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliPlaylistCheck
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliDiagnosticCheck
 ```
 
 The offline checks cover URL routing, ID validation, pagination limits, duplicate
@@ -37,10 +43,29 @@ range/length validation, failed-response cleanup, no credentials in media reques
 cancellation, timeouts, access/rate-limit/redirect stopping, redacted errors and
 no cross-CDN replay once playback has begun.
 
+The playlist fixtures cover unavailable first/middle/last/duplicate entries in
+favorites, seasons and series; later pages after an unavailable page; pagination
+limits; all-unavailable diagnostics; typed error classification; stopping on
+other errors; direct/list-level missing-resource errors; logging and redaction.
+
+The 0.6.8 build adds `BilibiliDiagnosticCheck`, which is entirely offline.
+It covers distinct HTTP/API error messages, allowlisted endpoint/ID context, list
+page/item failure logging, secret/query/body redaction, success-only metadata caching,
+expiry, LRU/size bounds, identity matching, preserved multipart/AV semantics,
+independent cached snapshots, concurrency and simulated repeated 201-entry loading.
+The simulation demonstrates removal of repeated metadata fetches within one live
+cache, not a reduction of first-load requests or a verified fix for service-side 412.
+No developer-side online tests were rerun for test2 after the earlier restriction.
+The user subsequently confirmed that music playback works and authorized release.
+The published JAR is byte-identical to test2, renamed to SonwMusicBot-0.6.8.jar;
+its startup diagnostic marker therefore still says "local test2". This confirmation
+does not establish successful loading of all 201 entries in the reported season.
+The release checks passed 599 offline assertions (41 + 60 + 344 + 90 + 64).
+
 Optional real-network smoke test:
 
 ```powershell
-java --enable-native-access=ALL-UNNAMED -cp "target/upgrade-check;target/SonwMusicBot-0.6.7.jar" com.jagrosh.jmusicbot.audio.BilibiliUpgradeCheck --online
+java --enable-native-access=ALL-UNNAMED -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliUpgradeCheck --online
 ```
 
 This defaults to the reported `BV1ZrJi6UEwN` video and checks old/new track serialization,
@@ -54,6 +79,20 @@ voice delivery or fetch real favorite/collection pages.
 To check another link, append its URL and expected BV identifier after `--online`.
 For example: `--online https://b23.tv/BV1ZrJi6UEwN BV1ZrJi6UEwN`.
 The HTTP 567 regression link is `--online https://www.bilibili.com/video/BV1yj411f7f8/?p=1 BV1yj411f7f8`.
+
+Optional public-season regression (may take several minutes):
+
+```powershell
+java --enable-native-access=ALL-UNNAMED -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliPlaylistCheck --online 7
+```
+
+This loads the user-reported season `3546569288714792/lists/2136390?type=season`,
+checks that unavailable `BV1D86dBrEaE` is skipped with a warning, verifies later
+tracks still load, and decodes 100 audio frames from a later entry. The optional
+numeric argument is the test's page limit (default 6); 7 covers the reported 201
+entries. It does not edit the user's config or connect to Discord. The live
+fixture's contents/availability can change; a restored video may require updating
+its expected missing ID. Other list types are covered offline, not via real accounts.
 
 Primary upstream report for the transport regression:
 https://github.com/yt-dlp/yt-dlp/issues/17847. No arbitrary host replacement from

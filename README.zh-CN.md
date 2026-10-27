@@ -27,7 +27,7 @@
 - **维护者：** AzureSonw
 - **主要语言：** Java
 - **支持的操作系统：** Windows
-- **当前版本：** `0.6.7`
+- **当前版本：** `0.6.8`
 
 ---
 
@@ -58,7 +58,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 
 ## 🚀 运行机器人
 
-1. 从 Releases 下载 `SonwMusicBot-0.6.7.jar`。
+1. 从 Releases 下载 `SonwMusicBot-0.6.8.jar`。
 2. 将 JAR 单独放进一个文件夹。
 3. 直接双击 JAR 启动 SonwMusicBot。
 4. 第一次启动时，机器人会自动生成配置文件。
@@ -68,7 +68,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 也可以通过命令行启动：
 
 ```bat
-java -jar SonwMusicBot-0.6.7.jar
+java -jar SonwMusicBot-0.6.8.jar
 ```
 
 如果双击没有反应，请确认 Java 已安装，并确认 Windows 已将 `.jar` 文件关联到 Java。
@@ -110,14 +110,16 @@ BUILD.bat
 
 Bilibili 升级验证：[独立检查说明](scripts/BILIBILI_TESTS.md)。
 
-0.6.7 修复 Bilibili 音频请求，并在开始播放时遇到 HTTP 567 等节点错误时尝试官方接口提供的备用地址。
+0.6.8 跳过 Bilibili 歌单中明确不可用的视频，并在控制台记录链接，不再因一条失效视频中断整个歌单。
+增加失败位置日志及 5 分钟成功视频详情缓存，减少重复请求；权限、限流、网络错误仍会正常提示。
+保留 0.6.7 的音频请求及官方备用地址修复。
 保留 0.6.6 的带签名视频详情解析；不会无限重试或替换成其他歌曲。
 可选的本机登录配置及故障排查：[Bilibili 使用说明](docs/BILIBILI.md)。
 
 构建输出：
 
 ```text
-target\SonwMusicBot-0.6.7.jar
+target\SonwMusicBot-0.6.8.jar
 ```
 
 ---

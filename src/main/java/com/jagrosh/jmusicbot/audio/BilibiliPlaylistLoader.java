@@ -4,6 +4,8 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.tools.JsonBrowser;
 import com.sedmelluq.discord.lavaplayer.track.*;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -13,6 +15,7 @@ import java.util.function.Function;
 /** Favorites, seasons and series previously supplied by the custom 1.3.1-lists binary. */
 final class BilibiliPlaylistLoader
 {
+    private static final Logger log = LoggerFactory.getLogger(BilibiliPlaylistLoader.class);
     private static final String API = "https://api.bilibili.com/";
     private record ListId(String kind, String owner, String id) {}
 
@@ -22,6 +25,7 @@ final class BilibiliPlaylistLoader
         ListId list = parse(url);
         if (list == null)
             return null;
+        log.info("Loading Bilibili playlist: kind={} id={} pageLimit={}", list.kind, list.id, pageLimit);
         String title = "Bilibili " + list.kind;
         if (list.kind.equals("series") && list.owner.isEmpty())
         {
@@ -36,11 +40,18 @@ final class BilibiliPlaylistLoader
         int size = list.kind.equals("favorite") ? 20 : 30;
         int limit = pageLimit > 0 ? pageLimit : Integer.MAX_VALUE;
         List<AudioTrack> tracks = new ArrayList<>();
+        int skipped = 0;
         Set<String> visited = new HashSet<>();
         Set<String> visitedPages = new HashSet<>();
         for (int page = 1; page <= limit; page++)
         {
-            JsonBrowser content = data(fetch.apply(endpoint(list, page)));
+            JsonBrowser content;
+            try { content = data(fetch.apply(endpoint(list, page))); }
+            catch (FriendlyException e)
+            {
+                log.warn("Bilibili playlist stopped: kind={} id={} page={} stage=list-page", list.kind, list.id, page);
+                throw e;
+            }
             JsonBrowser entries;
             long total;
             if (list.kind.equals("favorite"))
@@ -57,8 +68,10 @@ final class BilibiliPlaylistLoader
             }
             if (entries.values().isEmpty() || !visitedPages.add(entries.format()))
                 break;
+            int entryIndex = 0;
             for (JsonBrowser entry : entries.values())
             {
+                entryIndex++;
                 // Favorites may also contain articles or other non-video resources.
                 if (list.kind.equals("favorite") && entry.get("type").asLong(2) != 2)
                     continue;
@@ -73,7 +86,23 @@ final class BilibiliPlaylistLoader
                 if (!visited.add(video))
                     continue;
                 // A list entry represents one video, even when that video has multiple parts.
-                AudioItem item = loadVideo.apply("https://www.bilibili.com/video/" + video + "?p=1");
+                String videoUrl = "https://www.bilibili.com/video/" + video + "?p=1";
+                AudioItem item;
+                try { item = loadVideo.apply(videoUrl); }
+                catch (BilibiliErrors.ResourceUnavailable e)
+                {
+                    // Do not catch authentication, rate-limit, network or unexpected failures.
+                    // Log only the generated public video URL and a stable error code, never API bodies/cookies.
+                    skipped++;
+                    log.warn("Skipping unavailable Bilibili video {} ({})", videoUrl, e.reason);
+                    continue;
+                }
+                catch (FriendlyException e)
+                {
+                    log.warn("Bilibili playlist stopped: kind={} id={} page={} item={} video={} loaded={} skipped={}",
+                        list.kind, list.id, page, entryIndex, video, tracks.size(), skipped);
+                    throw e;
+                }
                 if (item instanceof AudioTrack track)
                     tracks.add(track);
                 else if (item instanceof AudioPlaylist playlist && !playlist.getTracks().isEmpty())
@@ -82,6 +111,13 @@ final class BilibiliPlaylistLoader
             if ((total >= 0 && (long) page * size >= total)
                 || (total < 0 && entries.values().size() < size))
                 break;
+        }
+        if (skipped > 0)
+        {
+            log.warn("Bilibili {} {}: loaded {} tracks, skipped {} unavailable videos (page limit: {})",
+                list.kind, list.id, tracks.size(), skipped, pageLimit);
+            if (tracks.isEmpty())
+                throw invalid("本次加载范围内的 Bilibili 视频均不可用，已跳过 " + skipped + " 条；详情见控制台。");
         }
         return new BasicAudioPlaylist(title, tracks, null, false);
     }
