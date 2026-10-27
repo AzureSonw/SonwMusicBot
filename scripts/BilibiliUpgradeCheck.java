@@ -125,17 +125,29 @@ public final class BilibiliUpgradeCheck
             BilibiliConfig config = new BilibiliConfig();
             config.setEnabled(true);
             config.setAllowSearch(true);
-            manager.registerSourceManager(new BilibiliSourceWithLists(new BilibiliAudioSourceManager(config), 6));
+            BilibiliSourceWithLists source = new BilibiliSourceWithLists(new BilibiliAudioSourceManager(config), 6);
+            manager.registerSourceManager(source);
             AudioTrack track = firstTrack(manager.loadItemSync(new AudioReference(videoUrl, null)));
             require(track.getInfo().identifier.equals(expectedBvid), "direct link resolves requested BV");
             System.out.println("ONLINE metadata PASS: " + track.getInfo().title);
             AudioTrack decoded = manager.decodeTrackDetails(track.getInfo(), manager.encodeTrackDetails(track));
             require(decoded != null && decoded.getIdentifier().equals(track.getIdentifier()), "source registration/serialization");
+            require(track instanceof SonwBilibiliAudioTrack && decoded instanceof SonwBilibiliAudioTrack
+                && decoded.makeClone() instanceof SonwBilibiliAudioTrack, "direct, saved and cloned tracks use fixed transport");
+            AudioTrack original = ((SonwBilibiliAudioTrack) track).original;
+            require(Arrays.equals(manager.encodeTrackDetails(original), manager.encodeTrackDetails(track)), "old plugin wire format unchanged");
+            require(manager.decodeTrackDetails(original.getInfo(), manager.encodeTrackDetails(original)) instanceof SonwBilibiliAudioTrack,
+                "old saved playlists decode with fixed transport");
+            AudioTrack other = original.makeClone();
+            AudioPlaylist wrappedParts = (AudioPlaylist) source.wrap(new BasicAudioPlaylist("Parts", List.of(original, other), other, false));
+            require(wrappedParts.getTracks().stream().allMatch(t -> t instanceof SonwBilibiliAudioTrack)
+                && wrappedParts.getSelectedTrack() == wrappedParts.getTracks().get(1) && !wrappedParts.isSearchResult(),
+                "multipart/list wrapping preserves selection");
             AtomicReference<FriendlyException> error = new AtomicReference<>();
             player.addListener(new AudioEventAdapter() {
                 @Override public void onTrackException(AudioPlayer p, AudioTrack t, FriendlyException e) { error.set(e); }
             });
-            player.playTrack(track);
+            player.playTrack(decoded.makeClone());
             int frames = 0;
             long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(45);
             while (frames < 100 && System.nanoTime() < deadline)
@@ -150,8 +162,46 @@ public final class BilibiliUpgradeCheck
             }
             require(frames == 100, "100 decoded audio frames");
             System.out.println("ONLINE playback PASS: " + frames + " audio frames");
+            long seekTo = track.getDuration() / 2;
+            player.getPlayingTrack().setPosition(seekTo);
+            int seekFrames = 0;
+            deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(45);
+            while (seekFrames < 100 && System.nanoTime() < deadline)
+            {
+                if (error.get() != null) throw error.get();
+                try {
+                    var frame = player.provide(1, TimeUnit.SECONDS);
+                    if (frame != null && !frame.isTerminator() && frame.getDataLength() > 0 && frame.getTimecode() >= seekTo - 100)
+                        seekFrames++;
+                } catch (TimeoutException ignored) { }
+            }
+            require(seekFrames == 100, "100 audio frames after seek");
+            System.out.println("ONLINE seek PASS: " + seekTo + " ms");
+            player.playTrack(track);
+            long lastTimecode = 0;
+            int fullFrames = 0;
+            deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(90);
+            while (System.nanoTime() < deadline)
+            {
+                if (error.get() != null) throw error.get();
+                try {
+                    var frame = player.provide(1, TimeUnit.SECONDS);
+                    if (frame != null && !frame.isTerminator() && frame.getDataLength() > 0)
+                    {
+                        fullFrames++;
+                        lastTimecode = frame.getTimecode();
+                    }
+                    if (player.getPlayingTrack() == null) break;
+                } catch (TimeoutException ignored) { }
+            }
+            if (error.get() != null) throw error.get();
+            require(player.getPlayingTrack() == null && fullFrames >= 100 && lastTimecode >= track.getDuration() - 1000,
+                "complete audio decoded, not just first seconds");
+            System.out.println("ONLINE full playback PASS: " + fullFrames + " frames, last " + lastTimecode + " ms");
             AudioItem search = manager.loadItemSync(new AudioReference("bilisearch:音乐", null));
             require(search instanceof AudioPlaylist && !((AudioPlaylist) search).getTracks().isEmpty(), "search results");
+            require(((AudioPlaylist) search).getTracks().stream().allMatch(t -> t instanceof SonwBilibiliAudioTrack),
+                "all search results use fixed transport");
             System.out.println("ONLINE search PASS");
         }
         finally { player.destroy(); manager.shutdown(); }

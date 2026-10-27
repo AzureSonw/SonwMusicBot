@@ -9,25 +9,28 @@ import com.sedmelluq.discord.lavaplayer.track.*;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.config.RequestConfig;
+import com.sedmelluq.discord.lavaplayer.tools.io.HttpClientTools;
+import com.sedmelluq.discord.lavaplayer.tools.io.HttpInterface;
+import com.sedmelluq.discord.lavaplayer.tools.io.HttpInterfaceManager;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-/** Keeps SonwMusicBot's list URLs while using the unmodified official plugin for every track. */
+/** Official metadata/signing with SonwMusicBot's list support and bounded audio transport. */
 final class BilibiliSourceWithLists implements AudioSourceManager
 {
     private final BilibiliAudioSourceManager delegate;
     private final int pageLimit;
+    private final HttpInterfaceManager media = HttpClientTools.createCookielessThreadLocalManager();
 
     BilibiliSourceWithLists(BilibiliAudioSourceManager delegate, int pageLimit)
     {
         this.delegate = delegate;
         this.pageLimit = pageLimit;
+        media.configureBuilder(builder -> builder.disableAutomaticRetries().disableRedirectHandling());
     }
 
     @Override
@@ -47,7 +50,44 @@ final class BilibiliSourceWithLists implements AudioSourceManager
                 .contains(uri.getHost().toLowerCase(Locale.ROOT))))) return null;
         AudioItem video = BilibiliVideoLoader.load(reference.identifier, this::fetchDetail,
             (info, cid) -> new BilibiliAudioTrack(info, BilibiliAudioTrack.TrackType.VIDEO, info.identifier, cid, delegate));
-        return video != null ? video : delegate.loadItem(manager, reference);
+        return wrap(video != null ? video : delegate.loadItem(manager, reference));
+    }
+
+    AudioItem wrap(AudioItem item)
+    {
+        if (item instanceof BilibiliAudioTrack track) return new SonwBilibiliAudioTrack(track, this);
+        if (item instanceof AudioPlaylist list)
+        {
+            List<AudioTrack> tracks = new ArrayList<>();
+            AudioTrack selected = null;
+            for (AudioTrack track : list.getTracks())
+            {
+                AudioTrack wrapped = (AudioTrack) wrap(track);
+                tracks.add(wrapped);
+                if (track == list.getSelectedTrack()) selected = wrapped;
+            }
+            return new BasicAudioPlaylist(list.getName(), tracks, selected, list.isSearchResult());
+        }
+        return item;
+    }
+
+    HttpInterface mediaInterface() { return media.getInterface(); }
+
+    List<URI> playbackUrls(BilibiliAudioTrack track)
+    {
+        if (track.getType() == BilibiliAudioTrack.TrackType.AUDIO)
+        {
+            if (!track.getId().matches("[0-9]+")) throw BilibiliErrors.problem("Bilibili 音频编号无效。");
+            return BilibiliPlaybackUrls.audio(fetch("https://api.bilibili.com/audio/music-service-c/web/url?sid="
+                + track.getId() + "&privilege=2&quality=2"));
+        }
+        if (track.getCid() == null || track.getCid() <= 0) throw BilibiliErrors.problem("Bilibili 视频分 P 编号无效。");
+        Map<String, String> parameters = new HashMap<>(delegate.dmParams$lavabili_plugin());
+        parameters.putAll(Map.of("bvid", track.getId(), "cid", track.getCid().toString(), "fnval", "16", "qn", "120"));
+        String query;
+        try { query = delegate.signWbi$lavabili_plugin(parameters); }
+        catch (IllegalStateException e) { throw BilibiliErrors.problem("无法获取 Bilibili 音频请求签名，请稍后重试。"); }
+        return BilibiliPlaybackUrls.video(fetch("https://api.bilibili.com/x/player/wbi/playurl?" + query));
     }
 
     private JsonBrowser fetchDetail(Map<String, String> parameters)
@@ -118,8 +158,14 @@ final class BilibiliSourceWithLists implements AudioSourceManager
     }
 
     @Override public String getSourceName() { return delegate.getSourceName(); }
-    @Override public boolean isTrackEncodable(AudioTrack track) { return delegate.isTrackEncodable(track); }
-    @Override public void encodeTrack(AudioTrack track, DataOutput output) throws IOException { delegate.encodeTrack(track, output); }
-    @Override public AudioTrack decodeTrack(AudioTrackInfo info, DataInput input) throws IOException { return delegate.decodeTrack(info, input); }
-    @Override public void shutdown() { delegate.shutdown(); }
+    private AudioTrack unwrap(AudioTrack track) { return track instanceof SonwBilibiliAudioTrack sonw ? sonw.original : track; }
+    @Override public boolean isTrackEncodable(AudioTrack track) { return delegate.isTrackEncodable(unwrap(track)); }
+    @Override public void encodeTrack(AudioTrack track, DataOutput output) throws IOException { delegate.encodeTrack(unwrap(track), output); }
+    @Override public AudioTrack decodeTrack(AudioTrackInfo info, DataInput input) throws IOException { return (AudioTrack) wrap(delegate.decodeTrack(info, input)); }
+    @Override public void shutdown()
+    {
+        try { media.close(); }
+        catch (IOException ignored) { }
+        finally { delegate.shutdown(); }
+    }
 }
