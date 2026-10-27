@@ -12,6 +12,8 @@ import org.apache.http.client.config.RequestConfig;
 import com.sedmelluq.discord.lavaplayer.tools.io.HttpClientTools;
 import com.sedmelluq.discord.lavaplayer.tools.io.HttpInterface;
 import com.sedmelluq.discord.lavaplayer.tools.io.HttpInterfaceManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -22,15 +24,18 @@ import java.util.*;
 /** Official metadata/signing with SonwMusicBot's list support and bounded audio transport. */
 final class BilibiliSourceWithLists implements AudioSourceManager
 {
+    private static final Logger log = LoggerFactory.getLogger(BilibiliSourceWithLists.class);
     private final BilibiliAudioSourceManager delegate;
     private final int pageLimit;
     private final HttpInterfaceManager media = HttpClientTools.createCookielessThreadLocalManager();
+    private final BilibiliDetailCache detailCache = new BilibiliDetailCache();
 
     BilibiliSourceWithLists(BilibiliAudioSourceManager delegate, int pageLimit)
     {
         this.delegate = delegate;
         this.pageLimit = pageLimit;
         media.configureBuilder(builder -> builder.disableAutomaticRetries().disableRedirectHandling());
+        log.info("Bilibili local test2 diagnostics enabled; successful video metadata cache: 5 minutes / 256 entries");
     }
 
     @Override
@@ -86,17 +91,30 @@ final class BilibiliSourceWithLists implements AudioSourceManager
         parameters.putAll(Map.of("bvid", track.getId(), "cid", track.getCid().toString(), "fnval", "16", "qn", "120"));
         String query;
         try { query = delegate.signWbi$lavabili_plugin(parameters); }
-        catch (IllegalStateException e) { throw BilibiliErrors.problem("无法获取 Bilibili 音频请求签名，请稍后重试。"); }
+        catch (IllegalStateException e)
+        {
+            BilibiliDiagnostics.signingFailure("https://api.bilibili.com/x/player/wbi/playurl");
+            throw BilibiliErrors.problem("无法获取 Bilibili 音频请求签名，请稍后重试。");
+        }
         return BilibiliPlaybackUrls.video(fetch("https://api.bilibili.com/x/player/wbi/playurl?" + query));
     }
 
     private JsonBrowser fetchDetail(Map<String, String> parameters)
     {
+        return detailCache.load(parameters, () -> fetchUncachedDetail(parameters));
+    }
+
+    private JsonBrowser fetchUncachedDetail(Map<String, String> parameters)
+    {
         // Reuse the plugin's signer and session, but use the current detail endpoint.
         // Unlike the old unsigned /view fallback this also works without page-embedded JSON.
         String query;
         try { query = delegate.signWbi$lavabili_plugin(parameters); }
-        catch (IllegalStateException e) { throw BilibiliErrors.problem("无法获取 Bilibili 请求签名，可能请求受限，请稍后重试。"); }
+        catch (IllegalStateException e)
+        {
+            BilibiliDiagnostics.signingFailure("https://api.bilibili.com/x/web-interface/wbi/view/detail");
+            throw BilibiliErrors.problem("无法获取 Bilibili 请求签名，可能请求受限，请稍后重试。");
+        }
         return fetch("https://api.bilibili.com/x/web-interface/wbi/view/detail?" + query);
     }
 
@@ -118,10 +136,14 @@ final class BilibiliSourceWithLists implements AudioSourceManager
                     uri = next;
                     continue;
                 }
-                BilibiliErrors.checkHttp(status);
+                BilibiliDiagnostics.checkHttp(uri.toString(), status);
                 throw BilibiliErrors.problem("无法解析 Bilibili 短链接，请使用完整视频链接。");
             }
-            catch (IOException | IllegalArgumentException e) { throw BilibiliErrors.problem("无法读取 Bilibili 短链接，请稍后重试。"); }
+            catch (IOException | IllegalArgumentException e)
+            {
+                BilibiliDiagnostics.networkFailure(uri.toString());
+                throw BilibiliErrors.problem("无法读取 Bilibili 短链接，请稍后重试。");
+            }
         }
         throw BilibiliErrors.problem("Bilibili 短链接跳转次数过多，已停止加载。");
     }
@@ -145,14 +167,17 @@ final class BilibiliSourceWithLists implements AudioSourceManager
     private JsonBrowser fetch(String url)
     {
         // Reuse the updated plugin's HTTP context, including its device/cookie handling.
+        int status = -1;
         try (CloseableHttpResponse response = delegate.getHttpInterface().execute(request(url)))
         {
-            int status = response.getStatusLine().getStatusCode();
-            BilibiliErrors.checkHttp(status);
-            return JsonBrowser.parse(response.getEntity().getContent());
+            status = response.getStatusLine().getStatusCode();
+            BilibiliDiagnostics.checkHttp(url, status);
+            if (response.getEntity() == null) throw new IOException("Missing response entity");
+            return BilibiliDiagnostics.checkApi(url, status, JsonBrowser.parse(response.getEntity().getContent()));
         }
         catch (IOException e)
         {
+            BilibiliDiagnostics.networkFailure(url, status);
             throw BilibiliErrors.problem("无法读取 Bilibili 信息，请稍后重试。");
         }
     }
@@ -164,6 +189,7 @@ final class BilibiliSourceWithLists implements AudioSourceManager
     @Override public AudioTrack decodeTrack(AudioTrackInfo info, DataInput input) throws IOException { return (AudioTrack) wrap(delegate.decodeTrack(info, input)); }
     @Override public void shutdown()
     {
+        detailCache.clear();
         try { media.close(); }
         catch (IOException ignored) { }
         finally { delegate.shutdown(); }
