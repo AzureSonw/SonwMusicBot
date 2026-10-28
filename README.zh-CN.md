@@ -27,7 +27,7 @@
 - **维护者：** AzureSonw
 - **主要语言：** Java
 - **支持的操作系统：** Windows
-- **当前版本：** `0.6.8`
+- **当前版本：** `0.6.9`
 
 ---
 
@@ -58,7 +58,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 
 ## 🚀 运行机器人
 
-1. 从 Releases 下载 `SonwMusicBot-0.6.8.jar`。
+1. 从 Releases 下载 `SonwMusicBot-0.6.9.jar`。
 2. 将 JAR 单独放进一个文件夹。
 3. 直接双击 JAR 启动 SonwMusicBot。
 4. 第一次启动时，机器人会自动生成配置文件。
@@ -68,7 +68,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 也可以通过命令行启动：
 
 ```bat
-java -jar SonwMusicBot-0.6.8.jar
+java -jar SonwMusicBot-0.6.9.jar
 ```
 
 如果双击没有反应，请确认 Java 已安装，并确认 Windows 已将 `.jar` 文件关联到 Java。
@@ -81,6 +81,10 @@ java -jar SonwMusicBot-0.6.8.jar
 
 ```hocon
 playback {
+  youtube {
+    useOAuth = true
+  }
+
   appleMusic {
     countryCode = "US"
     mediaAPIToken = ""
@@ -93,6 +97,10 @@ playback {
   }
 }
 ```
+
+从 0.6.9 开始，新配置默认 `playback.youtube.useOAuth = true`。
+没有已保存的 YouTube 授权时，请按照机器人的设备授权提示完成授权。
+升级会保留已有配置中明确设置的 `false`；缺少此项时使用新的默认值。
 
 完整配置文档：**N/A**
 
@@ -109,6 +117,7 @@ BUILD.bat
 构建脚本会先安装项目附带的本地 `lavabili-plugin` JAR，然后构建机器人。
 
 Bilibili 升级验证：[独立检查说明](scripts/BILIBILI_TESTS.md)。
+YouTube OAuth 配置验证：[离线检查说明](scripts/CONFIG_TESTS.md)。
 
 0.6.8 跳过 Bilibili 歌单中明确不可用的视频，并在控制台记录链接，不再因一条失效视频中断整个歌单。
 增加失败位置日志及 5 分钟成功视频详情缓存，减少重复请求；权限、限流、网络错误仍会正常提示。
@@ -119,7 +128,7 @@ Bilibili 升级验证：[独立检查说明](scripts/BILIBILI_TESTS.md)。
 构建输出：
 
 ```text
-target\SonwMusicBot-0.6.8.jar
+target\SonwMusicBot-0.6.9.jar
 ```
 
 ---

@@ -27,7 +27,7 @@ This version restores music playback functionality, adds Apple Music and Bilibil
 - **Maintainer:** AzureSonw
 - **Primary language:** Java
 - **Supported operating system:** Windows
-- **Current release:** `0.6.8`
+- **Current release:** `0.6.9`
 
 ---
 
@@ -58,7 +58,7 @@ Other sources inherited from the original bot may remain available depending on 
 
 ## 🚀 Running the Bot
 
-1. Download `SonwMusicBot-0.6.8.jar` from Releases.
+1. Download `SonwMusicBot-0.6.9.jar` from Releases.
 2. Put the JAR in its own folder.
 3. Double-click the JAR to start SonwMusicBot.
 4. On first launch, the bot creates its configuration file automatically.
@@ -68,7 +68,7 @@ Other sources inherited from the original bot may remain available depending on 
 Command-line startup remains available:
 
 ```bat
-java -jar SonwMusicBot-0.6.8.jar
+java -jar SonwMusicBot-0.6.9.jar
 ```
 
 If double-clicking does nothing, verify that Java is installed and that `.jar` files are associated with Java.
@@ -79,8 +79,16 @@ If double-clicking does nothing, verify that Java is installed and that `.jar` f
 
 The generated configuration enables Apple Music and Bilibili audio sources. Relevant options include:
 
+Starting with 0.6.9, new configurations default to `playback.youtube.useOAuth = true`.
+When no saved YouTube authorization exists, follow the bot's device authorization prompt.
+Upgrades preserve an existing explicit `false`; missing values use the new default.
+
 ```hocon
 playback {
+  youtube {
+    useOAuth = true
+  }
+
   appleMusic {
     countryCode = "US"
     mediaAPIToken = ""
@@ -109,6 +117,7 @@ BUILD.bat
 The script installs the bundled local `lavabili-plugin` JAR before building the bot.
 
 Bilibili upgrade verification: [standalone checks](scripts/BILIBILI_TESTS.md).
+YouTube OAuth configuration verification: [offline checks](scripts/CONFIG_TESTS.md).
 
 Version 0.6.8 skips explicitly unavailable Bilibili playlist entries and logs their
 links, adds safe failure diagnostics and caches successful video metadata for five
@@ -121,7 +130,7 @@ and troubleshooting: [Bilibili setup](docs/BILIBILI.md).
 Build output:
 
 ```text
-target\SonwMusicBot-0.6.8.jar
+target\SonwMusicBot-0.6.9.jar
 ```
 
 ---
