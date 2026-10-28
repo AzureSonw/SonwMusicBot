@@ -96,18 +96,19 @@ public class Listener extends ListenerAdapter
                 try
                 {
                     PrivateChannel channel = bot.getJDA().openPrivateChannelById(bot.getConfig().getOwnerId()).complete();
-                    channel
-                            .sendMessage(
-                                    "# DO NOT AUTHORISE THIS WITH YOUR MAIN GOOGLE ACCOUNT!!!\n"
-                                            + "## Create or use an alternative/burner Google account!\n"
-                                            + "To give JMusicBot access to your Google account, go to "
-                                            + data.getAuthorisationUrl()
-                                            + " and enter the code **" + data.getCode() + "**")
-                            .queue();
+                    channel.sendMessage(youtubeAuthorizationMessage(data)).queue();
                 }
                 catch (Exception ignored) {}
             }
         }
+    }
+
+    static String youtubeAuthorizationMessage(YoutubeOauth2TokenHandler.Data data)
+    {
+        return "SonwMusicBot 授权提示\n\n"
+                + "#请不要用您的主账户登录！#\n\n"
+                + "##创建或使用一个小号登录！##\n\n"
+                + "打开 " + data.getAuthorisationUrl() + " 登录后输入代码 ##" + data.getCode() + "##";
     }
 
     @Override

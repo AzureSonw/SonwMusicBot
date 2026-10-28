@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.arifbanai</groupId>
     <artifactId>JMusicBot</artifactId>
-    <version>0.6.9</version>
+    <version>0.6.9.1</version>
     <packaging>jar</packaging>
 
     <name>JMusicBot</name>
