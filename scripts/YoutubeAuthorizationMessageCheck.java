@@ -27,12 +27,14 @@ public class YoutubeAuthorizationMessageCheck
             require(handler.getData().getAuthorisationUrl().equals(url), "authorization URL is preserved");
             require(handler.getData().getCode().equals(code), "current code is captured unchanged");
             String message = Listener.youtubeAuthorizationMessage(handler.getData());
-            String expected = "SonwMusicBot 授权提示\n\n"
-                    + "#请不要用您的主账户登录！#\n\n"
-                    + "##创建或使用一个小号登录！##\n\n"
-                    + "打开 https://www.google.com/device 登录后输入代码 ##" + code + "##";
+            String expected = "# 请不要用您的主账户登录！#\n\n"
+                    + "## 创建或使用一个小号登录！##\n\n"
+                    + "打开 https://www.google.com/device 登录后输入代码 **" + code + "**\n\n"
+                    + "验证完后请重启机器人";
             require(message.equals(expected), "exact requested Chinese prompt and markers");
-            require(!message.contains("JMusicBot"), "authorization prompt uses SonwMusicBot branding");
+            require(!message.contains("JMusicBot") && !message.contains("SonwMusicBot 授权提示"), "no extra branding title");
+            require(message.contains("**" + code + "**"), "current code is bold");
+            require(!message.contains("##" + code + "##"), "old code markers are removed");
             require(!message.contains("DO NOT AUTHORISE") && !message.contains("burner"), "old English warning removed");
             require(message.indexOf(code) == message.lastIndexOf(code), "code appears exactly once");
             if (previousCode != null) require(!message.contains(previousCode), "renewed prompt does not reuse the old code");

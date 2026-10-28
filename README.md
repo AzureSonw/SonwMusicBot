@@ -27,7 +27,7 @@ This version restores music playback functionality, adds Apple Music and Bilibil
 - **Maintainer:** AzureSonw
 - **Primary language:** Java
 - **Supported operating system:** Windows
-- **Current release:** `0.6.9.1`
+- **Current release:** `0.6.9.2`
 
 ---
 
@@ -58,7 +58,7 @@ Other sources inherited from the original bot may remain available depending on 
 
 ## 🚀 Running the Bot
 
-1. Download `SonwMusicBot-0.6.9.1.jar` from Releases.
+1. Download `SonwMusicBot-0.6.9.2.jar` from Releases.
 2. Put the JAR in its own folder.
 3. Double-click the JAR to start SonwMusicBot.
 4. On first launch, the bot creates its configuration file automatically.
@@ -68,7 +68,7 @@ Other sources inherited from the original bot may remain available depending on 
 Command-line startup remains available:
 
 ```bat
-java -jar SonwMusicBot-0.6.9.1.jar
+java -jar SonwMusicBot-0.6.9.2.jar
 ```
 
 If double-clicking does nothing, verify that Java is installed and that `.jar` files are associated with Java.
@@ -82,8 +82,9 @@ The generated configuration enables Apple Music and Bilibili audio sources. Rele
 Starting with 0.6.9, new configurations default to `playback.youtube.useOAuth = true`.
 When no saved YouTube authorization exists, follow the bot's device authorization prompt.
 Upgrades preserve an existing explicit `false`; missing values use the new default.
-0.6.9.1 localizes the owner authorization DM into Chinese with SonwMusicBot branding;
-the authorization URL and code remain dynamic and the login flow is unchanged.
+0.6.9.2 corrects the Chinese authorization DM formatting: spaced warning headings,
+bold device code, no extra title, and a reminder to restart after verification.
+The URL and code remain dynamic and the login flow is unchanged.
 
 ```hocon
 playback {
@@ -132,7 +133,7 @@ and troubleshooting: [Bilibili setup](docs/BILIBILI.md).
 Build output:
 
 ```text
-target\SonwMusicBot-0.6.9.1.jar
+target\SonwMusicBot-0.6.9.2.jar
 ```
 
 ---
