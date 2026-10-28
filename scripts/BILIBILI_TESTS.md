@@ -21,12 +21,12 @@ network and unexpected failures. Canonical skipped links and totals are logged.
 After running `BUILD.bat`, run these commands from the repository root with JDK 25+:
 
 ```powershell
-javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.8.jar -d target/upgrade-check scripts/BilibiliUpgradeCheck.java scripts/Bilibili412Check.java scripts/Bilibili567Check.java scripts/BilibiliPlaylistCheck.java scripts/BilibiliDiagnosticCheck.java
-java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliUpgradeCheck
-java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.Bilibili412Check
-java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.Bilibili567Check
-java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliPlaylistCheck
-java -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliDiagnosticCheck
+javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.jar -d target/upgrade-check scripts/BilibiliUpgradeCheck.java scripts/Bilibili412Check.java scripts/Bilibili567Check.java scripts/BilibiliPlaylistCheck.java scripts/BilibiliDiagnosticCheck.java
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.9.jar" com.jagrosh.jmusicbot.audio.BilibiliUpgradeCheck
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.9.jar" com.jagrosh.jmusicbot.audio.Bilibili412Check
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.9.jar" com.jagrosh.jmusicbot.audio.Bilibili567Check
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.9.jar" com.jagrosh.jmusicbot.audio.BilibiliPlaylistCheck
+java -cp "target/upgrade-check;target/SonwMusicBot-0.6.9.jar" com.jagrosh.jmusicbot.audio.BilibiliDiagnosticCheck
 ```
 
 The offline checks cover URL routing, ID validation, pagination limits, duplicate
@@ -65,7 +65,7 @@ The release checks passed 599 offline assertions (41 + 60 + 344 + 90 + 64).
 Optional real-network smoke test:
 
 ```powershell
-java --enable-native-access=ALL-UNNAMED -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliUpgradeCheck --online
+java --enable-native-access=ALL-UNNAMED -cp "target/upgrade-check;target/SonwMusicBot-0.6.9.jar" com.jagrosh.jmusicbot.audio.BilibiliUpgradeCheck --online
 ```
 
 This defaults to the reported `BV1ZrJi6UEwN` video and checks old/new track serialization,
@@ -83,7 +83,7 @@ The HTTP 567 regression link is `--online https://www.bilibili.com/video/BV1yj41
 Optional public-season regression (may take several minutes):
 
 ```powershell
-java --enable-native-access=ALL-UNNAMED -cp "target/upgrade-check;target/SonwMusicBot-0.6.8.jar" com.jagrosh.jmusicbot.audio.BilibiliPlaylistCheck --online 7
+java --enable-native-access=ALL-UNNAMED -cp "target/upgrade-check;target/SonwMusicBot-0.6.9.jar" com.jagrosh.jmusicbot.audio.BilibiliPlaylistCheck --online 7
 ```
 
 This loads the user-reported season `3546569288714792/lists/2136390?type=season`,
