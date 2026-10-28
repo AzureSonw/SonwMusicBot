@@ -105,10 +105,10 @@ public class Listener extends ListenerAdapter
 
     static String youtubeAuthorizationMessage(YoutubeOauth2TokenHandler.Data data)
     {
-        return "SonwMusicBot 授权提示\n\n"
-                + "#请不要用您的主账户登录！#\n\n"
-                + "##创建或使用一个小号登录！##\n\n"
-                + "打开 " + data.getAuthorisationUrl() + " 登录后输入代码 ##" + data.getCode() + "##";
+        return "# 请不要用您的主账户登录！#\n\n"
+                + "## 创建或使用一个小号登录！##\n\n"
+                + "打开 " + data.getAuthorisationUrl() + " 登录后输入代码 **" + data.getCode() + "**\n\n"
+                + "验证完后请重启机器人";
     }
 
     @Override

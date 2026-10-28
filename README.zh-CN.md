@@ -27,7 +27,7 @@
 - **维护者：** AzureSonw
 - **主要语言：** Java
 - **支持的操作系统：** Windows
-- **当前版本：** `0.6.9.1`
+- **当前版本：** `0.6.9.2`
 
 ---
 
@@ -58,7 +58,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 
 ## 🚀 运行机器人
 
-1. 从 Releases 下载 `SonwMusicBot-0.6.9.1.jar`。
+1. 从 Releases 下载 `SonwMusicBot-0.6.9.2.jar`。
 2. 将 JAR 单独放进一个文件夹。
 3. 直接双击 JAR 启动 SonwMusicBot。
 4. 第一次启动时，机器人会自动生成配置文件。
@@ -68,7 +68,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 也可以通过命令行启动：
 
 ```bat
-java -jar SonwMusicBot-0.6.9.1.jar
+java -jar SonwMusicBot-0.6.9.2.jar
 ```
 
 如果双击没有反应，请确认 Java 已安装，并确认 Windows 已将 `.jar` 文件关联到 Java。
@@ -101,7 +101,7 @@ playback {
 从 0.6.9 开始，新配置默认 `playback.youtube.useOAuth = true`。
 没有已保存的 YouTube 授权时，请按照机器人的设备授权提示完成授权。
 升级会保留已有配置中明确设置的 `false`；缺少此项时使用新的默认值。
-0.6.9.1 将授权私信改为 SonwMusicBot 名称和中文提示，链接及验证码仍动态生成，授权流程不变。
+0.6.9.2 调整中文授权私信格式：警告标题加空格、验证码加粗，移除额外标题，并提醒验证后重启机器人；链接及验证码仍动态生成，授权流程不变。
 
 完整配置文档：**N/A**
 
@@ -129,7 +129,7 @@ YouTube OAuth 配置验证：[离线检查说明](scripts/CONFIG_TESTS.md)。
 构建输出：
 
 ```text
-target\SonwMusicBot-0.6.9.1.jar
+target\SonwMusicBot-0.6.9.2.jar
 ```
 
 ---

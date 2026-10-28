@@ -10,8 +10,8 @@ not its default value.
 After `BUILD.bat`, run with JDK 25+:
 
 ```powershell
-javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.1.jar -d target/config-check scripts/YoutubeOAuthConfigCheck.java
-java -cp "target/config-check;target/SonwMusicBot-0.6.9.1.jar" com.jagrosh.jmusicbot.config.YoutubeOAuthConfigCheck
+javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.2.jar -d target/config-check scripts/YoutubeOAuthConfigCheck.java
+java -cp "target/config-check;target/SonwMusicBot-0.6.9.2.jar" com.jagrosh.jmusicbot.config.YoutubeOAuthConfigCheck
 ```
 
 The checks exercise the packaged template, runtime defaults, current and legacy
@@ -23,25 +23,27 @@ These independent release-JAR checks do not run the legacy full test suite.
 
 ## Authorization message localization
 
-The owner DM uses SonwMusicBot branding and the requested Chinese warning text
-with literal `#` markers. The authorization URL and device code still come from
+The owner DM uses the requested Chinese warning text with spaces after heading
+markers, a bold device code, no extra title, and a final reminder to restart the
+bot after verification. The trailing warning hashes are
+preserved exactly as requested. The authorization URL and device code still come from
 the current upstream prompt; no live code is hardcoded. This only changes the
 bot's outgoing message, not Google's authorization page or token storage.
 
 ```powershell
-javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.1.jar -d target/config-check scripts/YoutubeAuthorizationMessageCheck.java
-java -cp "target/config-check;target/SonwMusicBot-0.6.9.1.jar" com.jagrosh.jmusicbot.YoutubeAuthorizationMessageCheck
+javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.2.jar -d target/config-check scripts/YoutubeAuthorizationMessageCheck.java
+java -cp "target/config-check;target/SonwMusicBot-0.6.9.2.jar" com.jagrosh.jmusicbot.YoutubeAuthorizationMessageCheck
 ```
 
 This check feeds two dummy device codes into the existing prompt capture path,
-then verifies exact text, branding and replacement of the previous code. It does
+then verifies exact text, spacing, bold formatting and replacement of the previous code. It does
 not handle refresh tokens, send Discord messages or contact Google.
 
 ## Four-part release version
 
 ```powershell
-javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.1.jar -d target/config-check scripts/ReleaseVersionCheck.java
-java -cp "target/config-check;target/SonwMusicBot-0.6.9.1.jar" com.jagrosh.jmusicbot.verification.ReleaseVersionCheck 0.6.9.1
+javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.2.jar -d target/config-check scripts/ReleaseVersionCheck.java
+java -cp "target/config-check;target/SonwMusicBot-0.6.9.2.jar" com.jagrosh.jmusicbot.verification.ReleaseVersionCheck 0.6.9.2
 ```
 
 This offline check verifies the packaged runtime version and update comparison
