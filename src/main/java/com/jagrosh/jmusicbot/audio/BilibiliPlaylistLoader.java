@@ -196,6 +196,6 @@ final class BilibiliPlaylistLoader
     }
     private static FriendlyException invalid(String message)
     {
-        return new FriendlyException(message, FriendlyException.Severity.COMMON, null);
+        return BilibiliErrors.problem(message);
     }
 }

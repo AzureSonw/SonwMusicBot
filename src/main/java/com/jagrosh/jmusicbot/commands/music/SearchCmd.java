@@ -50,7 +50,7 @@ public class SearchCmd extends MusicCommand
         this.searchingEmoji = bot.getConfig().getSearching();
         this.name = "search";
         this.aliases = bot.getConfig().getAliases(this.name);
-        this.arguments = "<query>";
+        this.arguments = "<搜索名字>";
         this.help = "从Youtube搜索";
         this.beListening = true;
         this.bePlaying = false;
@@ -141,7 +141,7 @@ public class SearchCmd extends MusicCommand
         public void loadFailed(FriendlyException throwable) 
         {
             if(throwable.severity==Severity.COMMON)
-                m.editMessage(event.getClient().getError()+" 出bug啦！ bug： "+throwable.getMessage()).queue();
+                m.editMessage(event.getClient().getError()+" 出bug啦！ bug： "+throwable.getLocalizedMessage()).queue();
             else
                 m.editMessage(event.getClient().getError()+" 出bug啦！").queue();
         }

@@ -27,7 +27,7 @@
 - **维护者：** AzureSonw
 - **主要语言：** Java
 - **支持的操作系统：** Windows
-- **当前版本：** `0.6.9.2`
+- **当前版本：** `0.7.0`
 
 ---
 
@@ -58,7 +58,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 
 ## 🚀 运行机器人
 
-1. 从 Releases 下载 `SonwMusicBot-0.6.9.2.jar`。
+1. 下载 [SonwMusicBot-0.7.0.jar](https://github.com/AzureSonw/SonwMusicBot/releases/download/v0.7.0/SonwMusicBot-0.7.0.jar)。
 2. 将 JAR 单独放进一个文件夹。
 3. 直接双击 JAR 启动 SonwMusicBot。
 4. 第一次启动时，机器人会自动生成配置文件。
@@ -68,7 +68,7 @@ Apple Music 链接会通过 LavaSrc 镜像搜索进行解析。
 也可以通过命令行启动：
 
 ```bat
-java -jar SonwMusicBot-0.6.9.2.jar
+java -jar SonwMusicBot-0.7.0.jar
 ```
 
 如果双击没有反应，请确认 Java 已安装，并确认 Windows 已将 `.jar` 文件关联到 Java。
@@ -129,7 +129,7 @@ YouTube OAuth 配置验证：[离线检查说明](scripts/CONFIG_TESTS.md)。
 构建输出：
 
 ```text
-target\SonwMusicBot-0.6.9.2.jar
+target\SonwMusicBot-0.7.0.jar
 ```
 
 ---
@@ -152,13 +152,13 @@ target\SonwMusicBot-0.6.9.2.jar
 
 ## 🌐 中文汉化
 
-大多数重要的音乐播放、队列和 DJ 指令消息已汉化为简体中文。部分较少使用的消息仍可能显示英文。
+0.7.0 补全了 `!help` 菜单、播放列表管理指令和更多报错提示的简体中文翻译。命令名和配置键不变。遇到 Bilibili 播放问题时，Discord 会给出简短提示，具体失败原因可在控制台查看。
 
 ---
 
 ## 📥 Releases
 
-预编译下载和版本说明：**N/A**
+[查看版本说明和下载文件](https://github.com/AzureSonw/SonwMusicBot/releases)。
 
 ---
 

@@ -79,7 +79,8 @@ final class BilibiliHttpStream extends PersistentHttpStream
             if (status == 567)
                 throw BilibiliErrors.problem(opened
                     ? "播放期间 Bilibili 音频节点拒绝了请求（HTTP 567），已停止以避免重复播放，请稍后重新点播。"
-                    : "Bilibili 音频节点拒绝了请求（HTTP 567），可用的官方地址均未成功，请稍后重试。");
+                    : "Bilibili 音频节点拒绝了请求（HTTP 567），可用的官方地址均未成功，请稍后重试。",
+                    opened ? "Bilibili罢工啦，出HTTP 567啦！" : "Bilibili出bug啦！出HTTP 567啦！");
             BilibiliErrors.checkHttp(status);
             throw BilibiliErrors.problem("Bilibili 音频响应无效，请稍后重试。");
         }

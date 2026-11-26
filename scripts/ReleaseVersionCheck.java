@@ -16,6 +16,7 @@ public class ReleaseVersionCheck
         require(!OtherUtil.isNewerVersion("0.6.9.1", "0.6.9.1"), "same release is not an upgrade");
         require(OtherUtil.isNewerVersion("0.6.9.1", "0.6.9.2"), "later hotfix is an upgrade");
         require(OtherUtil.isNewerVersion("0.6.9.1", "0.6.10"), "next patch is an upgrade");
+        require(OtherUtil.isNewerVersion("0.6.9.2", "0.7.0"), "0.7.0 upgrades the previous release");
         require(!OtherUtil.isNewerVersion("0.6.9.1", "0.6.9.1.0"), "trailing zero does not create a false upgrade");
         System.out.println("RELEASE VERSION OFFLINE PASS: " + checks + " assertions");
     }

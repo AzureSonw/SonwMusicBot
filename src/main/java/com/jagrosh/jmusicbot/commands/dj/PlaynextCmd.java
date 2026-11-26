@@ -42,7 +42,7 @@ public class PlaynextCmd extends DJCommand
         super(bot);
         this.loadingEmoji = bot.getConfig().getLoading();
         this.name = "playnext";
-        this.arguments = "<title|URL>";
+        this.arguments = "<歌名|歌曲链接>";
         this.help = "播放一首歌~";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
@@ -122,7 +122,7 @@ public class PlaynextCmd extends DJCommand
         public void loadFailed(FriendlyException throwable)
         {
             if(throwable.severity==FriendlyException.Severity.COMMON)
-                m.editMessage(event.getClient().getError()+" 出bug啦！ bug： "+throwable.getMessage()).queue();
+                m.editMessage(event.getClient().getError()+" 出bug啦！ bug： "+throwable.getLocalizedMessage()).queue();
             else
                 m.editMessage(event.getClient().getError()+" 出bug啦！").queue();
         }

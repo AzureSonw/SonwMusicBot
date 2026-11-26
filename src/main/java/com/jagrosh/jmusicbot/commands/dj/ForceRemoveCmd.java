@@ -40,7 +40,7 @@ public class ForceRemoveCmd extends DJCommand
         super(bot);
         this.name = "forceremove";
         this.help = "移除该用户的音乐";
-        this.arguments = "<user>";
+        this.arguments = "<用户>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = false;
         this.bePlaying = true;

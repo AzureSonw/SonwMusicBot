@@ -35,7 +35,7 @@ public class RemoveCmd extends MusicCommand
         super(bot);
         this.name = "remove";
         this.help = "从歌单里删除";
-        this.arguments = "<position|ALL>";
+        this.arguments = "<歌曲位置|ALL>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = true;

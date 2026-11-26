@@ -32,7 +32,7 @@ public class RepeatCmd extends DJCommand
         super(bot);
         this.name = "repeat";
         this.help = "歌单播放完后重新添加音乐";
-        this.arguments = "[off|all|single]";
+        this.arguments = "[off|all|single] (off是关闭， all是循环歌单，single是单曲循环）";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = true;
     }

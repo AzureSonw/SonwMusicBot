@@ -40,7 +40,7 @@ public abstract class MusicCommand extends Command
     {
         this.bot = bot;
         this.guildOnly = true;
-        this.category = new Category("Music");
+        this.category = new Category("音乐");
     }
     
     @Override
