@@ -46,10 +46,10 @@ public class OtherUtil
 {
     public final static String PROJECT_PAGE_URL = "https://github.com/AzureSonw/SonwMusicBot";
     private final static String RELEASE_API_BASE_URL = "https://api.github.com/repos/AzureSonw/SonwMusicBot";
-    public final static String NEW_VERSION_AVAILABLE = "There is a new version of JMusicBot available!\n"
-                    + "Current version: %s\n"
-                    + "New Version: %s\n\n"
-                    + "Please visit " + PROJECT_PAGE_URL + " to get the latest release.";
+    public final static String NEW_VERSION_AVAILABLE = "有更新啦~ \n"
+                    + "现版本: %s\n"
+                    + "新版本: %s\n\n"
+                    + "请前往 " + PROJECT_PAGE_URL + " 下载最新版本~";
     private final static String WINDOWS_INVALID_PATH = "c:\\windows\\system32\\";
     
     /**

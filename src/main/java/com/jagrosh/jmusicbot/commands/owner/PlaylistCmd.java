@@ -37,7 +37,7 @@ public class PlaylistCmd extends OwnerCommand
         this.guildOnly = false;
         this.name = "playlist";
         this.arguments = "<append|delete|make|setdefault>";
-        this.help = "playlist management";
+        this.help = "播放列表指令中心";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.children = new OwnerCommand[]{
             new ListCmd(),
@@ -51,7 +51,7 @@ public class PlaylistCmd extends OwnerCommand
     @Override
     public void execute(CommandEvent event) 
     {
-        StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" Playlist Management Commands:\n");
+        StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" 播放列表指令:\n");
         for(Command cmd: this.children)
             builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" ").append(cmd.getName())
                     .append(" ").append(cmd.getArguments()==null ? "" : cmd.getArguments()).append("` - ").append(cmd.getHelp());
@@ -64,8 +64,8 @@ public class PlaylistCmd extends OwnerCommand
         {
             this.name = "make";
             this.aliases = new String[]{"create"};
-            this.help = "makes a new playlist";
-            this.arguments = "<name>";
+            this.help = "创建新的播放列表";
+            this.arguments = "<播放列表名字>";
             this.guildOnly = false;
         }
 
@@ -76,22 +76,22 @@ public class PlaylistCmd extends OwnerCommand
             pname = pname.replaceAll("[*?|\\/\":<>]", "");
             if(pname == null || pname.isEmpty()) 
             {
-                event.replyError("Please provide a name for the playlist!");
+                event.replyError("喂！还没给你的播放列表起名字呢！");
             } 
             else if(bot.getPlaylistLoader().getPlaylist(pname) == null)
             {
                 try
                 {
                     bot.getPlaylistLoader().createPlaylist(pname);
-                    event.reply(event.getClient().getSuccess()+" Successfully created playlist `"+pname+"`!");
+                    event.reply(event.getClient().getSuccess()+" 成功创建播放列表 `" + pname + "`~");
                 }
                 catch(IOException e)
                 {
-                    event.reply(event.getClient().getError()+" I was unable to create the playlist: "+e.getLocalizedMessage());
+                    event.reply(event.getClient().getError()+" 出错啦！ " + e.getLocalizedMessage());
                 }
             }
             else
-                event.reply(event.getClient().getError()+" Playlist `"+pname+"` already exists!");
+                event.reply(event.getClient().getError()+" 播放列表 `" + pname + "` 已经存在啦！");
         }
     }
     
@@ -101,7 +101,7 @@ public class PlaylistCmd extends OwnerCommand
         {
             this.name = "delete";
             this.aliases = new String[]{"remove"};
-            this.help = "deletes an existing playlist";
+            this.help = "删除现有的播放列表";
             this.arguments = "<name>";
             this.guildOnly = false;
         }
@@ -111,17 +111,17 @@ public class PlaylistCmd extends OwnerCommand
         {
             String pname = event.getArgs().replaceAll("\\s+", "_");
             if(bot.getPlaylistLoader().getPlaylist(pname)==null)
-                event.reply(event.getClient().getError()+" Playlist `"+pname+"` doesn't exist!");
+                event.reply(event.getClient().getError()+" 播放列表 `" + pname + "` 不存在， 删不掉！");
             else
             {
                 try
                 {
                     bot.getPlaylistLoader().deletePlaylist(pname);
-                    event.reply(event.getClient().getSuccess()+" Successfully deleted playlist `"+pname+"`!");
+                    event.reply(event.getClient().getSuccess()+" 播放列表 `" + pname + "` 已删除~");
                 }
                 catch(IOException e)
                 {
-                    event.reply(event.getClient().getError()+" I was unable to delete the playlist: "+e.getLocalizedMessage());
+                    event.reply(event.getClient().getError()+" 出bug啦！播放列表 `" + pname + "` 删不掉！ " + e.getLocalizedMessage());
                 }
             }
         }
@@ -133,8 +133,8 @@ public class PlaylistCmd extends OwnerCommand
         {
             this.name = "append";
             this.aliases = new String[]{"add"};
-            this.help = "appends songs to an existing playlist";
-            this.arguments = "<name> <URL> | <URL> | ...";
+            this.help = "添加歌曲到现有的播放列表";
+            this.arguments = "<播放列表名字> <歌曲链接> | <Youtube播放列表链接> | <Apple Music播放列表链接>";
             this.guildOnly = false;
         }
 
@@ -144,13 +144,13 @@ public class PlaylistCmd extends OwnerCommand
             String[] parts = event.getArgs().split("\\s+", 2);
             if(parts.length<2)
             {
-                event.reply(event.getClient().getError()+" Please include a playlist name and URLs to add!");
+                event.reply(event.getClient().getError()+" 喂！播放列表名字还有音乐链接没输入呢！");
                 return;
             }
             String pname = parts[0];
             Playlist playlist = bot.getPlaylistLoader().getPlaylist(pname);
             if(playlist==null)
-                event.reply(event.getClient().getError()+" Playlist `"+pname+"` doesn't exist!");
+                event.reply(event.getClient().getError()+" 播放列表 `" + pname + "` 不存在！");
             else
             {
                 StringBuilder builder = new StringBuilder();
@@ -166,11 +166,11 @@ public class PlaylistCmd extends OwnerCommand
                 try
                 {
                     bot.getPlaylistLoader().writePlaylist(pname, builder.toString());
-                    event.reply(event.getClient().getSuccess()+" Successfully added "+urls.length+" items to playlist `"+pname+"`!");
+                    event.reply(event.getClient().getSuccess()+" 成功添加 " + urls.length + " 个内容到播放列表 `" + pname + "`！");
                 }
                 catch(IOException e)
                 {
-                    event.reply(event.getClient().getError()+" I was unable to append to the playlist: "+e.getLocalizedMessage());
+                    event.reply(event.getClient().getError()+" 出错啦！ " + e.getLocalizedMessage());
                 }
             }
         }
@@ -183,7 +183,7 @@ public class PlaylistCmd extends OwnerCommand
             super(bot);
             this.name = "setdefault";
             this.aliases = new String[]{"default"};
-            this.arguments = "<playlistname|NONE>";
+            this.arguments = "<播放列表名字|NONE>";
             this.guildOnly = true;
         }
     }
@@ -194,7 +194,7 @@ public class PlaylistCmd extends OwnerCommand
         {
             this.name = "all";
             this.aliases = new String[]{"available","list"};
-            this.help = "lists all available playlists";
+            this.help = "显示所有的可用播放列表";
             this.guildOnly = true;
         }
 
@@ -205,17 +205,17 @@ public class PlaylistCmd extends OwnerCommand
                 bot.getPlaylistLoader().createFolder();
             if(!bot.getPlaylistLoader().folderExists())
             {
-                event.reply(event.getClient().getWarning()+" Playlists folder does not exist and could not be created!");
+                event.reply(event.getClient().getWarning()+" 播放列表文件夹不存在或者不能被创建！");
                 return;
             }
             List<String> list = bot.getPlaylistLoader().getPlaylistNames();
             if(list==null)
-                event.reply(event.getClient().getError()+" Failed to load available playlists!");
+                event.reply(event.getClient().getError()+" 加载播放列表失败！");
             else if(list.isEmpty())
-                event.reply(event.getClient().getWarning()+" There are no playlists in the Playlists folder!");
+                event.reply(event.getClient().getWarning()+" 播放列表文件夹里没有播放列表！");
             else
             {
-                StringBuilder builder = new StringBuilder(event.getClient().getSuccess()+" Available playlists:\n");
+                StringBuilder builder = new StringBuilder(event.getClient().getSuccess()+" 可用的播放列表~\n");
                 list.forEach(str -> builder.append("`").append(str).append("` "));
                 event.reply(builder.toString());
             }

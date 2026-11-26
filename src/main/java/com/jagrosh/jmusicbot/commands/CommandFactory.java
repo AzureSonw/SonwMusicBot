@@ -30,6 +30,7 @@ public class CommandFactory {
             .setOwnerId(Long.toString(config.getOwnerId()))
             .setEmojis(config.getSuccess(), config.getWarning(), config.getError())
             .setHelpWord(config.getHelp())
+            .setHelpConsumer(event -> HelpMessage.send(event, config.getPrefix() == null))
             .setLinkedCacheSize(200)
             .setGuildSettingsManager(settings)
             .addCommands(aboutCommand,

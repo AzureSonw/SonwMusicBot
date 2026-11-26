@@ -10,8 +10,8 @@ not its default value.
 After `BUILD.bat`, run with JDK 25+:
 
 ```powershell
-javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.2.jar -d target/config-check scripts/YoutubeOAuthConfigCheck.java
-java -cp "target/config-check;target/SonwMusicBot-0.6.9.2.jar" com.jagrosh.jmusicbot.config.YoutubeOAuthConfigCheck
+javac -encoding UTF-8 -cp target/SonwMusicBot-0.7.0.jar -d target/config-check scripts/YoutubeOAuthConfigCheck.java
+java -cp "target/config-check;target/SonwMusicBot-0.7.0.jar" com.jagrosh.jmusicbot.config.YoutubeOAuthConfigCheck
 ```
 
 The checks exercise the packaged template, runtime defaults, current and legacy
@@ -31,8 +31,8 @@ the current upstream prompt; no live code is hardcoded. This only changes the
 bot's outgoing message, not Google's authorization page or token storage.
 
 ```powershell
-javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.2.jar -d target/config-check scripts/YoutubeAuthorizationMessageCheck.java
-java -cp "target/config-check;target/SonwMusicBot-0.6.9.2.jar" com.jagrosh.jmusicbot.YoutubeAuthorizationMessageCheck
+javac -encoding UTF-8 -cp target/SonwMusicBot-0.7.0.jar -d target/config-check scripts/YoutubeAuthorizationMessageCheck.java
+java -cp "target/config-check;target/SonwMusicBot-0.7.0.jar" com.jagrosh.jmusicbot.YoutubeAuthorizationMessageCheck
 ```
 
 This check feeds two dummy device codes into the existing prompt capture path,
@@ -42,8 +42,8 @@ not handle refresh tokens, send Discord messages or contact Google.
 ## Four-part release version
 
 ```powershell
-javac -encoding UTF-8 -cp target/SonwMusicBot-0.6.9.2.jar -d target/config-check scripts/ReleaseVersionCheck.java
-java -cp "target/config-check;target/SonwMusicBot-0.6.9.2.jar" com.jagrosh.jmusicbot.verification.ReleaseVersionCheck 0.6.9.2
+javac -encoding UTF-8 -cp target/SonwMusicBot-0.7.0.jar -d target/config-check scripts/ReleaseVersionCheck.java
+java -cp "target/config-check;target/SonwMusicBot-0.7.0.jar" com.jagrosh.jmusicbot.verification.ReleaseVersionCheck 0.7.0
 ```
 
 This offline check verifies the packaged runtime version and update comparison

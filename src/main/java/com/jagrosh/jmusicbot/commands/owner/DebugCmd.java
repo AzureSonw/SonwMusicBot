@@ -61,7 +61,7 @@ public class DebugCmd extends OwnerCommand
     {
         this.bot = bot;
         this.name = "debug";
-        this.help = "shows debug info";
+        this.help = "debug信息";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = false;
     }
@@ -104,7 +104,7 @@ public class DebugCmd extends OwnerCommand
     
     private void appendJMusicBotSection(StringBuilder sb)
     {
-        appendSectionHeader(sb, "JMUSICBOT");
+        appendSectionHeader(sb, "SONWMUSICBOT");
         
         String currentVersion = OtherUtil.getCurrentVersion();
         String latestVersion = OtherUtil.getLatestVersion();

@@ -19,7 +19,7 @@ public class MoveTrackCmd extends DJCommand
         super(bot);
         this.name = "movetrack";
         this.help = "移动歌曲到别的位置~";
-        this.arguments = "<from> <to>";
+        this.arguments = "<从><到>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = true;
     }

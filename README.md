@@ -27,7 +27,7 @@ This version restores music playback functionality, adds Apple Music and Bilibil
 - **Maintainer:** AzureSonw
 - **Primary language:** Java
 - **Supported operating system:** Windows
-- **Current release:** `0.6.9.2`
+- **Current release:** `0.7.0`
 
 ---
 
@@ -58,7 +58,7 @@ Other sources inherited from the original bot may remain available depending on 
 
 ## 🚀 Running the Bot
 
-1. Download `SonwMusicBot-0.6.9.2.jar` from Releases.
+1. Download [SonwMusicBot-0.7.0.jar](https://github.com/AzureSonw/SonwMusicBot/releases/download/v0.7.0/SonwMusicBot-0.7.0.jar).
 2. Put the JAR in its own folder.
 3. Double-click the JAR to start SonwMusicBot.
 4. On first launch, the bot creates its configuration file automatically.
@@ -68,7 +68,7 @@ Other sources inherited from the original bot may remain available depending on 
 Command-line startup remains available:
 
 ```bat
-java -jar SonwMusicBot-0.6.9.2.jar
+java -jar SonwMusicBot-0.7.0.jar
 ```
 
 If double-clicking does nothing, verify that Java is installed and that `.jar` files are associated with Java.
@@ -133,7 +133,7 @@ and troubleshooting: [Bilibili setup](docs/BILIBILI.md).
 Build output:
 
 ```text
-target\SonwMusicBot-0.6.9.2.jar
+target\SonwMusicBot-0.7.0.jar
 ```
 
 ---
@@ -156,13 +156,13 @@ Known issues and additional fixes: **N/A**
 
 ## 🌐 Chinese Localization
 
-Most important user-facing music, playback, queue, and DJ command messages have been translated into Simplified Chinese. Some less frequently used messages may remain in English.
+In 0.7.0, the `!help` menu, playlist management commands and more error messages are available in Simplified Chinese. Command names and configuration keys are unchanged. For Bilibili playback issues, check the console for the detailed error behind the short Discord message.
 
 ---
 
 ## 📥 Releases
 
-Prebuilt downloads and release notes: **N/A**
+[Release notes and downloads](https://github.com/AzureSonw/SonwMusicBot/releases).
 
 ---
 

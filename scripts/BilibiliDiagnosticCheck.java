@@ -59,11 +59,13 @@ public final class BilibiliDiagnosticCheck
                 require(!BilibiliDiagnostics.context(bad).contains("fixture-secret"), "untrusted context redacted");
             require(BilibiliDiagnostics.context("https://b23.tv/fixture-secret?cookie=fixture-secret").equals("stage=short-link endpoint=b23.tv"), "short-link token redacted");
             FriendlyException http = failure(() -> BilibiliDiagnostics.checkHttp(DETAIL, 412));
-            require(http.getMessage().contains("HTTP 412") && !http.getMessage().contains("fixture-secret"), "Discord distinguishes HTTP 412");
+            require(http.getMessage().contains("HTTP 412") && !http.getMessage().contains("fixture-secret"), "diagnostic identifies HTTP 412");
+            require("Bilibili出bug啦！".equals(http.getLocalizedMessage()), "Discord gets the localized 412 message");
             for (int code : List.of(-352, -412))
             {
                 FriendlyException api = failure(() -> BilibiliDiagnostics.checkApi(DETAIL, 200, json("{\"code\":" + code + ",\"message\":\"fixture-secret\"}")));
-                require(api.getMessage().contains("API " + code) && !api.getMessage().contains("HTTP 412"), "Discord distinguishes API " + code);
+                require(api.getMessage().contains("API " + code) && !api.getMessage().contains("HTTP 412"), "diagnostic identifies API " + code);
+                require("Bilibili出bug啦！".equals(api.getLocalizedMessage()), "Discord gets the localized API message");
                 require(last(captured).contains("HTTP=200 API=" + code), "actual HTTP/API pair logged");
             }
             failure(() -> BilibiliDiagnostics.checkApi(DETAIL, 200, json("{\"data\":\"fixture-secret\"}")));

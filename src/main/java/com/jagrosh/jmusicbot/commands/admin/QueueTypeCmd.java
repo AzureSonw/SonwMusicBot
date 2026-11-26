@@ -32,7 +32,7 @@ public class QueueTypeCmd extends AdminCommand
     {
         super();
         this.name = "queuetype";
-        this.help = "changes the queue type";
+        this.help = "更改播放设置";
         this.arguments = "[" + String.join("|", QueueType.getNames()) + "]";
         this.aliases = bot.getConfig().getAliases(this.name);
     }
@@ -47,7 +47,7 @@ public class QueueTypeCmd extends AdminCommand
         if (args.isEmpty())
         {
             QueueType currentType = settings.getQueueType();
-            event.reply(currentType.getEmoji() + " Current queue type is: `" + currentType.getUserFriendlyName() + "`.");
+            event.reply(currentType.getEmoji() + " 当前的播放模式是: `" + currentType.getUserFriendlyName() + "`");
             return;
         }
 
@@ -57,7 +57,7 @@ public class QueueTypeCmd extends AdminCommand
         }
         catch (IllegalArgumentException e)
         {
-            event.replyError("Invalid queue type. Valid types are: [" + String.join("|", QueueType.getNames()) + "]");
+            event.replyError("出错啦！可用的类别为： [" + String.join("|", QueueType.getNames()) + "]");
             return;
         }
 
@@ -70,6 +70,6 @@ public class QueueTypeCmd extends AdminCommand
                 handler.setQueueType(value);
         }
 
-        event.reply(value.getEmoji() + " Queue type was set to `" + value.getUserFriendlyName() + "`.");
+        event.reply(value.getEmoji() + " 播放模式已设为 `" + value.getUserFriendlyName() + "`");
     }
 }
